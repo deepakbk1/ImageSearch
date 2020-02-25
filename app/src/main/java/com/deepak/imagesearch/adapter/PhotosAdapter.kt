@@ -12,6 +12,7 @@ import com.deepak.imagesearch.network.getPhotoUrl
 import com.deepak.imagesearch.adapter.PhotosAdapter.PhotoHolder
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
+
 class PhotosAdapter : PagedListAdapter<FlickrPhoto, PhotoHolder>(getFlickrPhotoDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
@@ -23,13 +24,14 @@ class PhotosAdapter : PagedListAdapter<FlickrPhoto, PhotoHolder>(getFlickrPhotoD
         val photo: FlickrPhoto = getItem(position) ?: return
         holder.image?.let {
             Glide.with(holder.itemView.context)
-                    .load(getPhotoUrl(photo.farm, photo.server, photo.id, photo.secret))
-                    .into(it)
+                .load(getPhotoUrl(photo.farm, photo.server, photo.id, photo.secret))
+                .into(it)
         }
     }
 
     class PhotoHolder(itemView: View) : ViewHolder(itemView) {
         var image: ImageView? = null
+
         init {
             image = itemView.findViewById(R.id.image)
         }

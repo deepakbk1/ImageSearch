@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,10 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
+
 class MainActivity : AppCompatActivity() {
+    private val mHandler = Handler()
+    private var mQueryString = ""
 
     companion object {
         private const val PARAM_QUERY: String = "PARAM_QUERY"
@@ -77,12 +81,20 @@ class MainActivity : AppCompatActivity() {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchView.setQuery(currentQuery, false)
+                //  searchView.setQuery(currentQuery, false)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                mQueryString = newText!!
+
+                mHandler.removeCallbacksAndMessages(null)
+
+                mHandler.postDelayed(Runnable {
+                    searchView.setQuery(mQueryString, true)
+                }, 500)
                 return false
+
             }
         })
         if (currentQuery != null) {
